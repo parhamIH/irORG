@@ -13,8 +13,8 @@ A Django REST Framework backend for an e-commerce platform specializing in tech 
 ## Technologies
 
 - Django 
-- Django REST Framework
-- SQLite (Database)
+- Django REST Framework -> class base
+- mySQL (Database)
 - JWT Authentication (if implemented)
 
 ## API Endpoints
@@ -73,7 +73,3 @@ Access the admin dashboard at `/admin/` to manage:
 ## License
 
 [MIT License](LICENSE)
-
-## Contributors
-
-- Your Name - Initial work 
