@@ -44,3 +44,9 @@ ENV/
 # OS specific
 .DS_Store
 Thumbs.db 
+
+
+# Media
+uploads/
+color-images/
+
