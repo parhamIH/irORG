@@ -11,13 +11,21 @@ from .serializers import *
 
 class ProductListView(APIView):
     permission_classes = [AllowAny]
-    http_method_names = ['get']  
+    http_method_names = ['get' , 'post']  
 
     def get(self, request):
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
     
+    
+    def post(self ,request):
+        serializer = ProductSerializer(request.data, many=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
 class ProductDetailView(APIView):
     def get_permissions(self):
         if self.request.method in ['POST', 'PUT', 'DELETE']:

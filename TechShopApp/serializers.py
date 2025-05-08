@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer,HyperlinkedModelSerializer
 from .models import (
     Product, ProductPackage, Category, BaseCategorys, Brand, BaseColor, 
     Color, Size, Gallery, Comment,  
