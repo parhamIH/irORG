@@ -193,7 +193,6 @@ class Size(models.Model):
 
 class Category_Attributes(models.Model):
 
-    name = models.CharField( max_length=50)
     title = models.CharField( max_length=50 , default="ویژگی تعریف نشده ")
     category = models.ForeignKey("Category", verbose_name=("دسته بندی"), on_delete=models.CASCADE)
     value = models.TextField(verbose_name="توضیحات")

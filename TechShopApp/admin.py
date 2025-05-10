@@ -27,3 +27,6 @@ admin.site.register(Product)
 admin.site.register(ProductPackage)
 admin.site.register(Gallery)
 admin.site.register(Comment)
+admin.site.register(Category_Attributes)
+admin.site.register(product_attributes)
+
