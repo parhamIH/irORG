@@ -191,6 +191,19 @@ class Size(models.Model):
         else:
             return self.size_numrical or "بدون سایز"
 
+class Category_Attributes(models.Model):
+
+    name = models.CharField( max_length=50)
+    title = models.CharField( max_length=50 , default="ویژگی تعریف نشده ")
+    category = models.ForeignKey("Category", verbose_name=("دسته بندی"), on_delete=models.CASCADE)
+    value = models.TextField(verbose_name="توضیحات")
+    
+class product_attributes(models.Model):
+    
+    product = models.ForeignKey("Product", verbose_name=("محصول"), on_delete=models.CASCADE)
+    attribute = models.ForeignKey("Category_Attributes", verbose_name=("ویژگی"), on_delete=models.CASCADE)
+    value = models.CharField( max_length=50)
+
 class Product(models.Model):
     name = models.CharField(max_length=150, unique= True, verbose_name="نام محصول")
     description = models.TextField(verbose_name="توضیحات")
