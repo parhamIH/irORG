@@ -1,17 +1,32 @@
 from rest_framework.serializers import ModelSerializer,HyperlinkedModelSerializer
 from .models import (
-    Product, ProductPackage, Category, BaseCategorys, Brand, BaseColor, 
-    Color, Size, Gallery, Comment, Category_Attributes,product_attributes
+    BaseCategorys, Category, Brand, BaseColor, Color, Size,
+    CategoryAttribute, ProductAttribute, Product, ProductPackage,
+    Gallery, Comment
 )
+from rest_framework import serializers
 
 
-class BaseCategorysSerializer(ModelSerializer):
+
+class CategoryAttributeSerializer(ModelSerializer):
+    
     class Meta:
-        model = BaseCategorys
+        model = CategoryAttribute
         fields = '__all__'
 
 
+class ProductAttributeSerializer(ModelSerializer):
+    attribute_name = serializers.CharField(source='attribute.name', read_only=True)
+    attribute_title = serializers.CharField(source='attribute.title', read_only=True)
+    
+    class Meta:
+        model = ProductAttribute
+        fields = ['id', 'product', 'attribute', 'attribute_name', 'attribute_title', 'value']
+
+
 class CategorySerializer(ModelSerializer):
+    category_attributes = CategoryAttributeSerializer(many=True, read_only=True, source='category_attributes')
+    
     class Meta:
         model = Category
         fields = '__all__'
@@ -42,6 +57,8 @@ class SizeSerializer(ModelSerializer):
 
 
 class ProductSerializer(ModelSerializer):
+    attributes = ProductAttributeSerializer(many=True, read_only=True)
+    
     class Meta:
         model = Product
         fields = '__all__'
@@ -85,33 +102,29 @@ class BaseCategorysDetailSerializer(ModelSerializer):
         fields = '__all__' 
 
 
-class Category_AttributesSerializer(ModelSerializer):
-    class Meta:
-        model = Category_Attributes
-        fields = '__all__'
-
-
-class product_attributesSerializer(ModelSerializer):
-    class Meta:
-        model = product_attributes
-        fields = '__all__'
-
-
-
 class CategoryNestedSerializer(ModelSerializer):
     subcategories = CategorySerializer(many=True, read_only=True)
-    category_attributes = Category_AttributesSerializer(many=True, read_only=True, source='category_attributes')
+    category_attributes = CategoryAttributeSerializer(many=True, read_only=True, source='category_attributes')
     class Meta:
         model = Category
         fields = '__all__'
+
+
 class ProductDetailSerializer(ModelSerializer):
     categories = CategorySerializer(many=True, read_only=True)
     brand = BrandSerializer(read_only=True)
     product_packages = PPackageSerializer(many=True, read_only=True, source='product_packages')
     gallery_images = GallerySerializer(many=True, read_only=True, source='gallery_set')
     comments = CommentSerializer(many=True, read_only=True, source='comment_set')
-    product_attributes = product_attributesSerializer(many=True, read_only=True, source='product_attributes')
+    product_attributes = ProductAttributeSerializer(many=True, read_only=True, source='attributes')
     class Meta:
         model = Product
         fields = '__all__'
-        
+
+
+class BaseCategorysSerializer(ModelSerializer):
+    categories = CategorySerializer(many=True, read_only=True)
+    attributes = CategoryAttributeSerializer(many=True, read_only=True)
+    class Meta:
+        model = BaseCategorys
+        fields = '__all__'

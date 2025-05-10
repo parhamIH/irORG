@@ -82,6 +82,7 @@ class Category(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, verbose_name="دسته بندی والد", related_name='subcategories')
     base_catgory = models.ForeignKey(BaseCategorys, verbose_name="دسته بندی اصلی", on_delete=models.CASCADE, related_name='categories')
     
+    attributes = models.ManyToManyField('CategoryAttribute', verbose_name="ویژگی ها", related_name='categories', blank=True)
     name = models.CharField(max_length=20, unique=True, verbose_name="نام دسته بندی ---فارسی")
     en_name = models.CharField(max_length=20, unique=True, verbose_name="نام دسته بندی ---انگلیسی")
     description = models.TextField(verbose_name="توضیحات دسته بندی")
@@ -191,20 +192,26 @@ class Size(models.Model):
         else:
             return self.size_numrical or "بدون سایز"
 
-class Category_Attributes(models.Model):
-
-    title = models.CharField( max_length=50 , default="ویژگی تعریف نشده ")
-    category = models.ForeignKey("Category", verbose_name=("دسته بندی"), on_delete=models.CASCADE)
+    
+class CategoryAttribute(models.Model):
+    
+    title = models.CharField(max_length=50, default="ویژگی تعریف نشده", verbose_name="عنوان ویژگی")
+    category = models.ForeignKey("Category", verbose_name="دسته بندی", on_delete=models.CASCADE)
     value = models.TextField(verbose_name="توضیحات")
-
+    
+    class Meta:
+        verbose_name = "ویژگی دسته بندی"
+        verbose_name_plural = "ویژگی های دسته بندی"
+    
     def __str__(self):
-        return f"{self.name} - {self.category.name}"
+        return f"{self.title} - {self.category.name}"
 
 class Product(models.Model):
     name = models.CharField(max_length=150, unique= True, verbose_name="نام محصول")
     description = models.TextField(verbose_name="توضیحات")
     is_active = models.BooleanField(default=False, verbose_name="موجود")
     categories = models.ManyToManyField('Category', verbose_name="دسته بندی")
+    attributes = models.ManyToManyField('ProductAttribute', verbose_name="ویژگی ها", related_name='products', blank=True)
 # _________________________________________________*price*_____________________________________________________
     
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="زمان اضافه شدن")
@@ -294,14 +301,18 @@ class ProductPackage(models.Model):
             
         super().save(*args, **kwargs)
     
-class product_attributes(models.Model):
+class ProductAttribute(models.Model):
+    product = models.ForeignKey("Product", verbose_name="محصول", on_delete=models.CASCADE)
+    attribute = models.ForeignKey(CategoryAttribute, verbose_name="ویژگی", on_delete=models.CASCADE)
+    value = models.CharField(max_length=50, verbose_name="مقدار ویژگی")
     
-    product = models.ForeignKey("Product", verbose_name=("محصول"), on_delete=models.CASCADE,null=True,blank=True)
-    attribute = models.ForeignKey("Category_Attributes", verbose_name=("ویژگی"), on_delete=models.CASCADE,null=True,blank=True)
-    value = models.CharField( max_length=50,null=True,blank=True)
-
+    class Meta:
+        verbose_name = "ویژگی محصول"
+        verbose_name_plural = "ویژگی های محصول"
+    
     def __str__(self):
-        return f"{self.product.name} - {self.attribute.name} - {self.value}"
+        return f"{self.product.name} - {self.attribute.title} - {self.value}"
+
 class Gallery(models.Model):
 
     product = models.ForeignKey(Product,on_delete=models.CASCADE,verbose_name="محصول")

@@ -1,6 +1,10 @@
 # admin.py
 from django.contrib import admin
-from .models import *
+from .models import (
+    BaseCategorys, Category, Brand, BaseColor, Color, Size,
+    CategoryAttribute, ProductAttribute, Product, ProductPackage,
+    Gallery, Comment
+)
 
 class BaseCategorysAdmin(admin.ModelAdmin):
     list_display = ('name',)  # فرض کنید که فیلد name دارید
@@ -27,6 +31,6 @@ admin.site.register(Product)
 admin.site.register(ProductPackage)
 admin.site.register(Gallery)
 admin.site.register(Comment)
-admin.site.register(Category_Attributes)
-admin.site.register(product_attributes)
+admin.site.register(CategoryAttribute)
+admin.site.register(ProductAttribute)
 
