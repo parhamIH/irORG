@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer,HyperlinkedModelSerializer
 from .models import (
     Product, ProductPackage, Category, BaseCategorys, Brand, BaseColor, 
-    Color, Size, Gallery, Comment,  
+    Color, Size, Gallery, Comment, Category_Attributes,product_attributes
 )
 
 
@@ -100,3 +100,18 @@ class BaseCategorysDetailSerializer(ModelSerializer):
     class Meta:
         model = BaseCategorys
         fields = '__all__' 
+
+
+class Category_AttributesSerializer(ModelSerializer):
+    class Meta:
+        model = Category_Attributes
+        fields = '__all__'
+
+
+class product_attributesSerializer(ModelSerializer):
+    class Meta:
+        model = product_attributes
+        fields = '__all__'
+
+
+
