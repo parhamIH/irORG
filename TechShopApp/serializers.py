@@ -89,7 +89,6 @@ class CommentSerializer(ModelSerializer):
         return super().create(validated_data)
 
 
-# Detailed/Nested Serializers
 
 
 

@@ -197,7 +197,7 @@ class CategoryAttribute(models.Model):
     
     title = models.CharField(max_length=50, default="ویژگی تعریف نشده", verbose_name="عنوان ویژگی")
     category = models.ForeignKey("Category", verbose_name="دسته بندی", on_delete=models.CASCADE)
-    value = models.TextField(verbose_name="توضیحات")
+    description = models.TextField(verbose_name="توضیحات")
     
     class Meta:
         verbose_name = "ویژگی دسته بندی"
