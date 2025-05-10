@@ -73,25 +73,8 @@ class CommentSerializer(ModelSerializer):
 
 
 # Detailed/Nested Serializers
-class CategoryNestedSerializer(ModelSerializer):
-    subcategories = CategorySerializer(many=True, read_only=True)
-    
-    class Meta:
-        model = Category
-        fields = '__all__'
 
 
-class ProductDetailSerializer(ModelSerializer):
-    categories = CategorySerializer(many=True, read_only=True)
-    brand = BrandSerializer(read_only=True)
-    product_packages = PPackageSerializer(many=True, read_only=True, source='product_packages')
-    gallery_images = GallerySerializer(many=True, read_only=True, source='gallery_set')
-    comments = CommentSerializer(many=True, read_only=True, source='comment_set')
-    
-    class Meta:
-        model = Product
-        fields = '__all__'
-        
 
 class BaseCategorysDetailSerializer(ModelSerializer):
     categories = CategorySerializer(many=True, read_only=True)
@@ -115,3 +98,20 @@ class product_attributesSerializer(ModelSerializer):
 
 
 
+class CategoryNestedSerializer(ModelSerializer):
+    subcategories = CategorySerializer(many=True, read_only=True)
+    category_attributes = Category_AttributesSerializer(many=True, read_only=True, source='category_attributes')
+    class Meta:
+        model = Category
+        fields = '__all__'
+class ProductDetailSerializer(ModelSerializer):
+    categories = CategorySerializer(many=True, read_only=True)
+    brand = BrandSerializer(read_only=True)
+    product_packages = PPackageSerializer(many=True, read_only=True, source='product_packages')
+    gallery_images = GallerySerializer(many=True, read_only=True, source='gallery_set')
+    comments = CommentSerializer(many=True, read_only=True, source='comment_set')
+    product_attributes = product_attributesSerializer(many=True, read_only=True, source='product_attributes')
+    class Meta:
+        model = Product
+        fields = '__all__'
+        

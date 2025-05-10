@@ -198,6 +198,9 @@ class Category_Attributes(models.Model):
     category = models.ForeignKey("Category", verbose_name=("دسته بندی"), on_delete=models.CASCADE)
     value = models.TextField(verbose_name="توضیحات")
 
+    def __str__(self):
+        return f"{self.name} - {self.category.name}"
+
 class Product(models.Model):
     name = models.CharField(max_length=150, unique= True, verbose_name="نام محصول")
     description = models.TextField(verbose_name="توضیحات")
@@ -298,7 +301,8 @@ class product_attributes(models.Model):
     attribute = models.ForeignKey("Category_Attributes", verbose_name=("ویژگی"), on_delete=models.CASCADE,null=True,blank=True)
     value = models.CharField( max_length=50,null=True,blank=True)
 
-
+    def __str__(self):
+        return f"{self.product.name} - {self.attribute.name} - {self.value}"
 class Gallery(models.Model):
 
     product = models.ForeignKey(Product,on_delete=models.CASCADE,verbose_name="محصول")
